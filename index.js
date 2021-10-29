@@ -43,6 +43,7 @@ async function run() {
       res.json(result);
     });
 
+
     //GET api to get My Booking
     app.get('/mybooking/:email', async (req, res) => {
       const result = await userCollection.find({email:req.params.email}).toArray();
@@ -58,11 +59,41 @@ async function run() {
       res.json(result);
     });
 
+    // Get all User info
+    app.get('/manageallorder', async (req,res)=>{
+      const result = await userCollection.find({}).toArray();
+      res.json(result);
+    });
+
+    
+    // Get api for status change
+    
+    app.put('/status/:id', async (req, res) => {
+      const id = req.params.id;
+      const updatedInfo = req.body;
+      const result = await userCollection.updateOne({_id:ObjectId(id)},{
+        $set:{
+          status : updatedInfo.statu
+        },
+      });
+      res.json(result.acknowledged);
+    });
+
+
+
     // POST api to store User info
     app.post('/userinfo', async (req, res) => {
       const userInfo = req.body;
       const result = await userCollection.insertOne(userInfo);
       res.json(result.acknowledged);
+    });
+
+    // Delete Api for user info
+    app.delete('/delete/:id', async(req,res)=>{
+      const id = req.params.id;
+      const query = {_id:ObjectId(id)};
+      const result = await userCollection.deleteOne(query);
+      res.json(result.acknowledged)
     })
 
   } finally {

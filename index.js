@@ -42,6 +42,16 @@ async function run() {
       
       res.json(result);
     });
+
+    //GET api to get My Booking
+    app.get('/mybooking/:email', async (req, res) => {
+      const result = await userCollection.find({email:req.params.email}).toArray();
+      console.log(result);
+      
+      res.json(result);
+    });
+
+
     //GET api to get Blogs
     app.get('/blogs', async (req, res) => {
       const result = await blogCollection.find({}).toArray();

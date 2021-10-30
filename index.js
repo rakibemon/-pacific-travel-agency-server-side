@@ -33,7 +33,9 @@ async function run() {
       const result = await destinationCollection.find({}).toArray();
       res.json(result);
     });
-    //GET api to get Signle Tour Destination
+
+
+    //GET api to get Signle Tour Destination 
     app.get('/destination/:id', async (req, res) => {
       const id = req.params.id;
       
@@ -66,9 +68,27 @@ async function run() {
     });
 
     
-    // Get api for status change
+   
+
+
+    // POST api to inset service on destinationCollection
+    app.post('/addaservice', async(req,res)=>{
+      const serviceData = req.body;
+      const result = await destinationCollection.insertOne(serviceData);
+      res.json(result.acknowledged);
+
+    })
+
+    // POST api to store User info
+    app.post('/userinfo', async (req, res) => {
+      const userInfo = req.body;
+      const result = await userCollection.insertOne(userInfo);
+      res.json(result.acknowledged);
+    });
+
+     // PUT/update api for status change
     
-    app.put('/status/:id', async (req, res) => {
+     app.put('/status/:id', async (req, res) => {
       const id = req.params.id;
       const updatedInfo = req.body;
       const result = await userCollection.updateOne({_id:ObjectId(id)},{
@@ -79,14 +99,23 @@ async function run() {
       res.json(result.acknowledged);
     });
 
-
-
-    // POST api to store User info
-    app.post('/userinfo', async (req, res) => {
-      const userInfo = req.body;
-      const result = await userCollection.insertOne(userInfo);
+    // Put/update api for update service info
+     app.put('/updateservice/:id', async (req, res) => {
+      const id = req.params.id;
+      const updatedInfo = req.body;
+      const result = await destinationCollection.updateOne({_id:ObjectId(id)},{
+        $set:{
+          name: updatedInfo.name,
+          duration: updatedInfo.duration,
+          place: updatedInfo.place,
+          price: updatedInfo.price
+        },
+      });
+      
       res.json(result.acknowledged);
     });
+
+
 
     // Delete Api for user info
     app.delete('/delete/:id', async(req,res)=>{

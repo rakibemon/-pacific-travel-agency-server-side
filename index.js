@@ -28,14 +28,14 @@ async function run() {
     const blogCollection = database.collection("Blog");
     const userCollection = database.collection("User_Info");
 
-    //GET api to get Tour Destination
+    //GET API to get Tour Destination
     app.get('/destinations', async (req, res) => {
       const result = await destinationCollection.find({}).toArray();
       res.json(result);
     });
 
 
-    //GET api to get Signle Tour Destination 
+    //GET API to get Signle Tour Destination 
     app.get('/destination/:id', async (req, res) => {
       const id = req.params.id;
       
@@ -46,7 +46,7 @@ async function run() {
     });
 
 
-    //GET api to get My Booking
+    //GET API to get My Booking
     app.get('/mybooking/:email', async (req, res) => {
       const result = await userCollection.find({email:req.params.email}).toArray();
       console.log(result);
@@ -55,7 +55,7 @@ async function run() {
     });
 
 
-    //GET api to get Blogs
+    //GET API to get all Blog
     app.get('/blogs', async (req, res) => {
       const result = await blogCollection.find({}).toArray();
       res.json(result);
@@ -71,7 +71,7 @@ async function run() {
    
 
 
-    // POST api to inset service on destinationCollection
+    // POST API to inset service on destinationCollection
     app.post('/addaservice', async(req,res)=>{
       const serviceData = req.body;
       const result = await destinationCollection.insertOne(serviceData);
@@ -79,14 +79,14 @@ async function run() {
 
     })
 
-    // POST api to store User info
+    // POST API to store User info
     app.post('/userinfo', async (req, res) => {
       const userInfo = req.body;
       const result = await userCollection.insertOne(userInfo);
       res.json(result.acknowledged);
     });
 
-     // PUT/update api for status change
+     // PUT/update API for status change
     
      app.put('/status/:id', async (req, res) => {
       const id = req.params.id;
@@ -99,7 +99,7 @@ async function run() {
       res.json(result.acknowledged);
     });
 
-    // Put/update api for update service info
+    // Put/update API for update service info
      app.put('/updateservice/:id', async (req, res) => {
       const id = req.params.id;
       const updatedInfo = req.body;
@@ -117,7 +117,7 @@ async function run() {
 
 
 
-    // Delete Api for user info
+    // Delete API for user info
     app.delete('/delete/:id', async(req,res)=>{
       const id = req.params.id;
       const query = {_id:ObjectId(id)};
